@@ -21,7 +21,9 @@ Crea un juego donde el jugador toma decisiones para sobrevivir en una selva con 
 ## **Su programa debe tener un menú que permita:**
 
 ● Construir el árbol mediante inserciones, teniendo en cuenta sus preguntas y respuestas, la profundidad tiene que ser al menos 4
+
 ● Dar la opción que el usuario consulte todas las veces que desee
+
 ● El usuario responde preguntas y según sus decisiones llegará a la supervivencia o al fracaso.
 
 ## **Evaluación**
