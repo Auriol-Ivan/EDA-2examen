@@ -57,8 +57,8 @@ public class ArbolBinario {
         int i = obtenerIndice(listadoDeNodos, nodo);
 
         switch (opcion) {
-            case 1 -> {
-                if (nodo.getOpcion1().contains("volver")) {
+           case 1 -> {
+                if (nodo.getOpcion1().contains("volver") || nodo.getOpcion1().contains("Volver")) {
                     i = 0;
                     return i;
                 } else {
@@ -67,7 +67,7 @@ public class ArbolBinario {
                 }
             }
             case 2 -> {
-                if (nodo.getOpcion2().contains("volver")) {
+                if (nodo.getOpcion2().contains("volver") || nodo.getOpcion2().contains("Volver") ) {
                     i = 0;
                     return i;
                 } else if (nodo.getOpcion2().contains("gracias")) {
