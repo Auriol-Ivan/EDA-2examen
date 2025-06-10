@@ -7,10 +7,6 @@ public class ArbolBinario {
     public Nodo[] listadoDeNodos;
     private final int capacidad;
     private String nombreArbol;
-
-    public String getNombreArbol() {
-        return nombreArbol;
-    }
     Scanner tecladoNum = new Scanner(System.in);
     Scanner tecladoStr = new Scanner(System.in);
     public ArbolBinario[] listaDeArboles = new ArbolBinario[10];
@@ -24,18 +20,18 @@ public class ArbolBinario {
         }
     }
 
+    public String getNombreArbol() {
+        return nombreArbol;
+    }
+
     public boolean insert(Nodo dato, int posicion) {
 
         if (listadoDeNodos[posicion] == null && posicion < capacidad) {
             listadoDeNodos[posicion] = dato;
-//            System.out.println("elemento insertado"); //controlador para ver si se insertaban
-//            for (int i = 0; i < capacidad; i++) {
-//                System.out.println(listadoDeNodos[i]);
-//            }
             return true;
 
         } else {
-            System.err.println("No se pudo insertar en el arbol");
+            System.err.println("No se pudo insertar en el árbol");
             return false;
         }
     }
@@ -97,18 +93,29 @@ public class ArbolBinario {
         return i;
     }
 
-    public void jugar(int i) {
-        System.out.println(listadoDeNodos[i].getEvento());
-        System.out.println("1- "+listadoDeNodos[i].getOpcion1());
-        System.out.println("2- "+listadoDeNodos[i].getOpcion2());
-        System.out.println("3- Salir del juego.");
-        if (listadoDeNodos[i].isContinuasVivo()) {
-            int opcion = tecladoNum.nextInt();
-            i = decision(opcion, listadoDeNodos[i]);
-            jugar(i);
-        } else {
+    /* ********** Menú Principal ********** */
+    public void menuPrincipal() {
+        int opcion;
+        do {
+            System.out.println("Bienvenido a nuestro juego! Que desea hacer?\n\n1- Quieres crear tu historia\n2- Jugar una Historia\n3- Salir");
+            opcion = tecladoNum.nextInt();
+            switch (opcion) {
+                case 1:
+                    ArbolBinario nuevoArbol = crearArbol();
+                    insertarEnListaDeArboles(nuevoArbol);
+                    break;
+                case 2:
+                    seleccionarYJugar();
+                    break;
+                case 3:
+                    System.out.println("Saliendo");
+                    break;
 
-        }
+                default:
+                    System.out.println("no ingresó una opcion valida");
+            }
+        } while (opcion != 3);
+
     }
 
     //metodo para crear arbol desde menú
@@ -119,11 +126,11 @@ public class ArbolBinario {
         int padre;
         String otro;
         String nombreArbolNuevo;
-        System.out.println("Ingrese el nombre de la historia.");
+        System.out.println("Ingrese el Nombre de la historia.\n");
         nombreArbolNuevo = tecladoStr.nextLine();
         ArbolBinario arbolCreado = new ArbolBinario(nombreArbolNuevo);
 
-        System.out.println("Para crear cada Nodo se necesita: "
+        System.out.println("\nPara crear cada Nodo se necesita: "
                 + "\nUn Evento: que cuenta el punto donde se lleva a la toma de decisión, "
                 + "\nOpción1, Opción2 que representan las posibles decisiones a tomar, "
                 + "\nUn estado que reperesenta si en este punto se fracasa o no (si/no)");
@@ -170,8 +177,9 @@ public class ArbolBinario {
                 } while (!cambio && contador < capacidad);
 
                 if (cambio) {
-                    System.out.println("elemento insertado");
+                    System.out.println("\nelemento insertado");
                     for (int i = 0; i < capacidad; i++) {
+                        if(arbolCreado.listadoDeNodos[i] != null)
                         System.out.println(arbolCreado.listadoDeNodos[i]);
                     }
                     contador++;  // avanzar al siguiente intento
@@ -179,39 +187,17 @@ public class ArbolBinario {
             }
 
             if (contador >= capacidad) {
-                System.out.println("arbol lleno, no se pueden agregar más nodos.");
+                System.out.println("árbol lleno, no se pueden agregar más nodos.\n");
                 break;
             }
 
-            System.out.println("Desea agregar otro nodo?");
+            System.out.println("\nDesea agregar otro nodo?");
             System.out.println("1- Si");
             System.out.println("2- No");
             otro = tecladoStr.nextLine();
 
         } while (!otro.equalsIgnoreCase("no") && !otro.equals("2") && contador < capacidad);
         return arbolCreado;
-    }
-
-    private Nodo crearNodo() {
-        String evento;
-        String opcion1;
-        String opcion2;
-        String estadoString;
-        boolean estado = true;
-        System.out.println("Ingrese el Evento:");
-        evento = tecladoStr.nextLine();
-        System.out.println("Ingrese la Opcion1:");
-        opcion1 = tecladoStr.nextLine();
-        System.out.println("Ingrese la Opcion2:");
-        opcion2 = tecladoStr.nextLine();
-        System.out.println("En este punto el personaje fracasó?");
-        estadoString = tecladoStr.nextLine();
-        if (estadoString.contains("si")) {
-            estado = false;
-        }
-        Nodo nuevo = new Nodo(evento, opcion1, opcion2, estado);
-
-        return nuevo;
     }
 
     public void insertarEnListaDeArboles(ArbolBinario arbol) {
@@ -230,32 +216,30 @@ public class ArbolBinario {
         }
     }
 
-    public void menuPrincipal() {
-        int opcion;
-        do {
-            System.out.println("Bienvenido a nuestro juego! Que decea hacer?\n1- Crear historia\n2- Jugar\n3- Salir");
-            opcion = tecladoNum.nextInt();
-            switch (opcion) {
-                case 1:
-                    ArbolBinario nuevoArbol = crearArbol();
-                    insertarEnListaDeArboles(nuevoArbol);
-                    break;
-                case 2:
-                    seleccionarYJugar();
-                    break;
-                case 3:
-                    System.out.println("Saliendo");
-                    break;
+    private Nodo crearNodo() {
+        String evento;
+        String opcion1;
+        String opcion2;
+        String estadoString;
+        boolean estado = true;
+        System.out.println("\nIngrese el Evento o Historia:");
+        evento = tecladoStr.nextLine();
+        System.out.println("Ingrese la Opción1:");
+        opcion1 = tecladoStr.nextLine();
+        System.out.println("Ingrese la Opción2:");
+        opcion2 = tecladoStr.nextLine();
+        System.out.println("En este punto el personaje fracasó?");
+        estadoString = tecladoStr.nextLine();
+        if (estadoString.contains("si")) {
+            estado = false;
+        }
+        Nodo nuevo = new Nodo(evento, opcion1, opcion2, estado);
 
-                default:
-                    System.out.println("no ingresó una opcion valida");
-            }
-        } while (opcion != 3);
-
+        return nuevo;
     }
 
     public void seleccionarYJugar() {
-        System.out.println("Seleccione la historia que desea jugar:");
+        System.out.println("Seleccione la historia que desea jugar:\n");
         for (int i = 0; i < listaDeArboles.length; i++) {
             if (listaDeArboles[i] != null) {
                 System.out.println(i + " - " + listaDeArboles[i].getNombreArbol());
@@ -270,4 +254,24 @@ public class ArbolBinario {
         }
     }
 
+    public void jugar(int i) {
+        if (listadoDeNodos[i] != null) {
+
+            System.out.println("\n" + listadoDeNodos[i].getEvento());
+            System.out.println("1- " + listadoDeNodos[i].getOpcion1());
+            System.out.println("2- " + listadoDeNodos[i].getOpcion2());
+            System.out.println("3- Salir del juego.\n");
+            if (listadoDeNodos[i].isContinuasVivo()) {
+                int opcion = tecladoNum.nextInt();
+                i = decision(opcion, listadoDeNodos[i]);
+                jugar(i);
+            }
+
+        } else if (listadoDeNodos.length < i) {
+            System.out.println("Llegaste al final de la historia");
+        } else {
+            System.out.println("Historia incompleta.\n");
+        }
+
+    }
 }
